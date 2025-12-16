@@ -18,9 +18,11 @@ Route::get('/user', function (Request $request) {
 Route::get('/products/public', [ProductController::class, 'publicIndex']);
 
 // Public auth routes
+Route::middleware(['cors'])->group(function () {
 Route::prefix('admin')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/check-auth', [AuthController::class, 'checkAuth']);
+});
 });
 
 // Protected admin routes - USING CUSTOM TOKEN MIDDLEWARE
