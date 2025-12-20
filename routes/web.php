@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -58,18 +57,3 @@ Route::get('/login', function () {
 
 
 
-Route::post('/test-simple-login', function (Illuminate\Http\Request $request) {
-    // Log the incoming request
-    Log::info('Test login attempt', [
-        'email' => $request->email,
-        'has_password' => !empty($request->password),
-        'ip' => $request->ip()
-    ]);
-    
-    return response()->json([
-        'success' => true,
-        'message' => 'Login endpoint works',
-        'received' => $request->only('email', 'password'),
-        'timestamp' => now()
-    ]);
-});
