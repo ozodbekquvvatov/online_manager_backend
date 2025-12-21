@@ -2,62 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return file_get_contents(public_path('index.html'));
+// routes/web.php da
+Route::post('/api/admin/login', function (\Illuminate\Http\Request $request) {
+    // To'g'ri login logikasi yozing
+    return response()->json([
+        'success' => true,
+        'token' => 'test-token-' . time(),
+        'user' => [
+            'id' => 1,
+            'name' => 'Admin',
+            'email' => $request->email,
+            'role' => 'admin'
+        ]
+    ]);
 });
-Route::get('admin/employees', function () {
-    return file_get_contents(public_path('index.html'));
-});
 
-Route::get('admin/products', function () {
-    return file_get_contents(public_path('index.html'));});
-
-
-
-Route::get('admin/inventory', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/sales', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/customers', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/expenses', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/accounting', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/reports', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/analytics', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/website', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/settings', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/profile', function () {
-    return file_get_contents(public_path('index.html'));});
-Route::get('/admin', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('/login', function () {
-    return file_get_contents(public_path('index.html'));});
-
-
-
-// Route::get('/test-config', function() {
-//     return response()->json([
-//         'session_driver' => config('session.driver'),
-//         'cache_driver' => config('cache.default'),
-//         'db_connection' => config('database.default'),
-//         'env_session' => env('SESSION_DRIVER'),
-//         'env_cache' => env('CACHE_DRIVER'),
-//         'app_debug' => config('app.debug')
-//     ]);
-// });
