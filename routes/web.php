@@ -2,68 +2,42 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return file_get_contents(public_path('index.html'));
-});
-Route::get('admin/employees', function () {
-    return file_get_contents(public_path('index.html'));
+// ========== API ROUTE'LARI ==========
+Route::post('/api/admin/login', function (\Illuminate\Http\Request $request) {
+    // ... login kodi
 });
 
-Route::get('admin/products', function () {
-    return file_get_contents(public_path('index.html'));});
+// ========== ODDIY ROUTE'LAR (index.html bo'lmasa) ==========
+$routes = [
+    '/',
+    '/admin',
+    '/login',
+    'admin/employees',
+    'admin/products',
+    'admin/inventory',
+    'admin/sales',
+    'admin/website',
+    'admin/profile',
+];
 
-Route::get('admin/calculators', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/attendance', function () {
-    return file_get_contents(public_path('index.html'));    });  
-Route::get('admin/payroll', function () {
-    return file_get_contents(public_path('index.html'));}); 
-
-Route::get('admin/inventory', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/sales', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/customers', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/expenses', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/accounting', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/reports', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/analytics', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/website', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/settings', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('admin/profile', function () {
-    return file_get_contents(public_path('index.html'));});
-Route::get('/admin', function () {
-    return file_get_contents(public_path('index.html'));});
-
-Route::get('/login', function () {
-    return file_get_contents(public_path('index.html'));});
-
-
-
-Route::get('/test-config', function() {
-    return response()->json([
-        'session_driver' => config('session.driver'),
-        'cache_driver' => config('cache.default'),
-        'db_connection' => config('database.default'),
-        'env_session' => env('SESSION_DRIVER'),
-        'env_cache' => env('CACHE_DRIVER'),
-        'app_debug' => config('app.debug')
-    ]);
-});
+foreach ($routes as $route) {
+    Route::get($route, function () {
+        $htmlPath = public_path('index.html');
+        
+        if (file_exists($htmlPath)) {
+            return response(file_get_contents($htmlPath))
+                ->header('Content-Type', 'text/html');
+        }
+        
+        // index.html yo'q bo'lsa, JSON qaytar
+        return response()->json([
+            'app' => 'Online Manager Backend',
+            'frontend' => 'https://onlineadminmanager.netlify.app',
+            'api' => [
+                'login' => 'POST /api/admin/login',
+                'health' => 'GET /api/health'
+            ],
+            'note' => 'Frontend alohida Netlify-da. Backend faqat API uchun.'
+        ]);
+    });
+}
