@@ -3,7 +3,7 @@
 return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['https://onlineadminmanager.netlify.app'],
+    'allowed_origins' => ['https://onlineadminmanager1.netlify.app/'],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],

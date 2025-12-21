@@ -2,18 +2,40 @@
 
 use Illuminate\Support\Facades\Route;
 
-// routes/web.php da
-Route::post('/api/admin/login', function (\Illuminate\Http\Request $request) {
-    // To'g'ri login logikasi yozing
-    return response()->json([
-        'success' => true,
-        'token' => 'test-token-' . time(),
-        'user' => [
-            'id' => 1,
-            'name' => 'Admin',
-            'email' => $request->email,
-            'role' => 'admin'
-        ]
-    ]);
+Route::get('/', function () {
+    return file_get_contents(public_path('index.html'));
 });
+Route::get('admin/employees', function () {
+    return file_get_contents(public_path('index.html'));
+});
+
+Route::get('admin/products', function () {
+    return file_get_contents(public_path('index.html'));});
+
+
+
+Route::get('admin/inventory', function () {
+    return file_get_contents(public_path('index.html'));});
+
+Route::get('admin/sales', function () {
+    return file_get_contents(public_path('index.html'));});
+
+
+
+
+
+
+Route::get('admin/website', function () {
+    return file_get_contents(public_path('index.html'));});
+
+
+Route::get('admin/profile', function () {
+    return file_get_contents(public_path('index.html'));});
+Route::get('/admin', function () {
+    return file_get_contents(public_path('index.html'));});
+
+Route::get('/login', function () {
+    return file_get_contents(public_path('index.html'));});
+
+
 
