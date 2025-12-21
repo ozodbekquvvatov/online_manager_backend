@@ -45,11 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
             'auth.admin' => \App\Http\Middleware\AdminTokenAuth::class,
             'cors' => \App\Http\Middleware\Cors::class,
-            'api' => [\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class, HandleCors::class, 'throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class,],
-            'api-no-throttle' => [
-                \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-                \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            ],
+          
         ]);
 
         // CSRF'dan istisna qilish (API uchun)
