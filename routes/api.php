@@ -25,11 +25,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/check-auth', [AuthController::class, 'checkAuth']);
     
     // Also add CSRF token route for web apps
-    Route::get('/csrf-token', function () {
-        return response()->json([
-            'csrf_token' => csrf_token()
-        ]);
-    });
+ 
 });
 
 // ========== PROTECTED ADMIN ROUTES ==========

@@ -2,11 +2,11 @@
 
 return [
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
-    'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    'allowed_methods' => ['*'],
     'allowed_origins' => ['https://onlineadminmanager.netlify.app'],
     'allowed_origins_patterns' => [],
-    'allowed_headers' => ['Content-Type', 'Authorization', 'X-Requested-With'],
+    'allowed_headers' => ['*'],
     'exposed_headers' => [],
-    'max_age' => 86400, // 24 soat
-    'supports_credentials' => false,
+    'max_age' => 0,
+    'supports_credentials' => true,
 ];
