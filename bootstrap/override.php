@@ -1,26 +1,15 @@
 <?php
-// Force-override session and cache drivers
+// Force override configuration BEFORE Laravel loads
 $_ENV['SESSION_DRIVER'] = 'cookie';
 $_ENV['CACHE_DRIVER'] = 'array';
 $_ENV['QUEUE_CONNECTION'] = 'sync';
 
-// Disable database if connection fails
-if (!function_exists('override_database')) {
-    function override_database() {
-        // Temporarily disable database connection attempts
-        class_alias(Illuminate\Support\Facades\Cache::class, 'DB');
+// Prevent any database session queries
+if (!function_exists('disable_database_sessions')) {
+    function disable_database_sessions() {
+        // Override the session handler
+        class_alias(\Illuminate\Session\CookieSessionHandler::class, \Illuminate\Session\DatabaseSessionHandler::class);
     }
 }
 
-// Prevent session database queries
-if (!function_exists('prevent_session_db')) {
-    function prevent_session_db() {
-        // Replace DatabaseSessionHandler with a dummy
-        if (class_exists('Illuminate\Session\DatabaseSessionHandler')) {
-            class_alias('Illuminate\Session\FileSessionHandler', 'Illuminate\Session\DatabaseSessionHandler');
-        }
-    }
-}
-
-override_database();
-prevent_session_db();
+disable_database_sessions();

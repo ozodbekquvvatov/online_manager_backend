@@ -9,25 +9,25 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        // Fix for Railway: Set cache paths to writable locations
-        $this->app->booting(function () {
-            $cachePath = '/tmp/views';
-            
-            // Ensure the directory exists and is writable
-            if (!is_dir($cachePath)) {
-                mkdir($cachePath, 0755, true);
-            }
-            
-            // Set view cache path
-            Config::set('view.compiled', $cachePath);
-            
-            // Also fix other cache paths if needed
-            Config::set('cache.stores.file.path', '/tmp/cache');
-        });
+        // Force cookie sessions on application boot
+        Config::set('session.driver', 'cookie');
+        Config::set('cache.default', 'array');
+        Config::set('queue.default', 'sync');
+        
+        // Fix cache paths for Railway
+        Config::set('view.compiled', '/tmp/views');
+        
+        // Ensure directories exist
+        if (!is_dir('/tmp/views')) {
+            mkdir('/tmp/views', 0755, true);
+        }
     }
     
     public function boot()
     {
-        //
+        // Double-check session driver
+        if (config('session.driver') === 'database') {
+            config(['session.driver' => 'cookie']);
+        }
     }
 }

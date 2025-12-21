@@ -57,3 +57,13 @@ Route::get('/login', function () {
 
 
 
+Route::get('/test-config', function() {
+    return response()->json([
+        'session_driver' => config('session.driver'),
+        'cache_driver' => config('cache.default'),
+        'db_connection' => config('database.default'),
+        'env_session' => env('SESSION_DRIVER'),
+        'env_cache' => env('CACHE_DRIVER'),
+        'app_debug' => config('app.debug')
+    ]);
+});
