@@ -16,34 +16,11 @@ Route::get('/user', function (Request $request) {
 
 // Public routes for landing page
 Route::get('/products/public', [ProductController::class, 'publicIndex']);
-Route::post('/admin/login', function(Illuminate\Http\Request $request) {
-    // Hardcoded login - NO DATABASE
-    $validEmail = 'admin@business.com';
-    $validPassword = 'admin123';
-    
-    if ($request->email === $validEmail && $request->password === $validPassword) {
-        return response()->json([
-            'success' => true,
-            'token' => 'temp-token-' . time(),
-            'user' => [
-                'id' => 1,
-                'name' => 'Admin',
-                'email' => $validEmail,
-                'role' => 'admin'
-            ]
-        ]);
-    }
-    
-    return response()->json([
-        'success' => false,
-        'message' => 'Invalid credentials'
-    ], 401);
-});
 
 // Public auth routes
 Route::middleware(['cors'])->group(function () {
 Route::prefix('admin')->group(function () {
-    // Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login']);
     Route::get('/check-auth', [AuthController::class, 'checkAuth']);
 });
 });
