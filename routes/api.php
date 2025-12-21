@@ -19,10 +19,8 @@ Route::get('/products/public', [ProductController::class, 'publicIndex']);
 
 // Public auth routes
 Route::prefix('admin')->middleware(['api-no-throttle'])->group(function () {
-    Route::prefix('admin')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/check-auth', [AuthController::class, 'checkAuth']);
-});
 });
 
 // Protected admin routes - USING CUSTOM TOKEN MIDDLEWARE
