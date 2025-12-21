@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,4 +33,13 @@ class AppServiceProvider extends ServiceProvider
             config(['session.driver' => 'cookie']);
         }
     }
+
+protected function configureRateLimiting(): void
+{
+    RateLimiter::for('api', function (Request $request) {
+        // This defines the 'api' limiter
+        return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+    });
+}
+
 }
