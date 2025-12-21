@@ -10,7 +10,6 @@ use App\Http\Controllers\Admin\EmployeesController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\ProductImageController;
 
-// Public routes (no auth required)
 Route::get('/user', function (Request $request) {
     return $request->user();
 });
@@ -18,23 +17,20 @@ Route::get('/user', function (Request $request) {
 // Public routes for landing page
 Route::get('/products/public', [ProductController::class, 'publicIndex']);
 
-// ========== PUBLIC AUTH ROUTES (NO MIDDLEWARE) ==========
+// Public auth routes
+Route::middleware(['cors'])->group(function () {
 Route::prefix('admin')->group(function () {
-    // These routes must be OUTSIDE auth middleware
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/check-auth', [AuthController::class, 'checkAuth']);
-    
-    // Also add CSRF token route for web apps
- 
+});
 });
 
-// ========== PROTECTED ADMIN ROUTES ==========
+// Protected admin routes - USING CUSTOM TOKEN MIDDLEWARE
 Route::prefix('admin')->middleware(['auth.admin'])->group(function () {
-    // Auth routes (except login/check-auth)
+    // Auth routes
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/profile', [AuthController::class, 'getProfile']);
     Route::put('/profile', [AuthController::class, 'updateProfile']);
-    Route::post('/change-password', [AuthController::class, 'changePassword']);
 
     // Dashboard routes
     Route::get('/dashboard/metrics', [DashboardController::class, 'getMetrics']);
@@ -44,21 +40,28 @@ Route::prefix('admin')->middleware(['auth.admin'])->group(function () {
     // Product routes
     Route::apiResource('products', ProductController::class);
     Route::patch('products/{id}/stock', [ProductController::class, 'updateStock']);
-    Route::get('/products/search', [ProductController::class, 'search']); // Fixed path
 
     // Sales routes
-    Route::apiResource('sales', SalesController::class);
+    Route::get('sales', [SalesController::class, 'index']);
     Route::get('sales/stats', [SalesController::class, 'stats']);
     Route::get('sales/top-products', [SalesController::class, 'topProducts']);
     Route::get('sales/trend', [SalesController::class, 'trend']);
     Route::post('sales/{id}/process', [SalesController::class, 'processOrder']);
     Route::post('sales/{id}/cancel', [SalesController::class, 'cancelOrder']);
-
+    Route::post('/sales', [SalesController::class, 'store']);
+    Route::delete('sales/{id}', [SalesController::class, 'destroy']);
+    Route::put('sales/{id}', [SalesController::class, 'update']);
+    Route::get('/admin/products/search', [ProductController::class, 'search']);
     // Employees routes
     Route::apiResource('employees', EmployeesController::class);
 
-    // Inventory routes
-    Route::get('inventory/stats', [InventoryController::class, 'stats']);
+
+    Route::get('/employees', [EmployeesController::class, 'index']);
+    Route::post('/employees', [EmployeesController::class, 'store']);
+    Route::get('/employees/{id}', [EmployeesController::class, 'show']);
+    Route::put('/employees/{id}', [EmployeesController::class, 'update']);
+    Route::delete('/employees/{id}', [EmployeesController::class, 'destroy']);
+
 
     // Product Image Routes
     Route::prefix('products/{product}/images')->group(function () {
@@ -70,5 +73,10 @@ Route::prefix('admin')->middleware(['auth.admin'])->group(function () {
         Route::delete('/multiple', [ProductImageController::class, 'destroyMultiple']);
         Route::delete('/{image}', [ProductImageController::class, 'destroy']);
     });
+    // Profile routes
+    Route::get('/profile', [AuthController::class, 'getProfile']);
+    Route::put('/profile', [AuthController::class, 'updateProfile']);
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
+    // Inventory routes
+    Route::get('inventory/stats', [InventoryController::class, 'stats']);
 });
-
