@@ -32,14 +32,11 @@ class AppServiceProvider extends ServiceProvider
         if (config('session.driver') === 'database') {
             config(['session.driver' => 'cookie']);
         }
+         RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
     }
 
-protected function configureRateLimiting(): void
-{
-    RateLimiter::for('api', function (Request $request) {
-        // This defines the 'api' limiter
-        return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-    });
-}
+  
 
 }
