@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Request; 
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
