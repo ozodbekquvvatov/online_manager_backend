@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 define('LARAVEL_START', microtime(true));
 
 // ========== ADD THIS ==========
-require __DIR__.'/../bootstrap/override.php';
 // ========== END ADD ==========
 
 // Determine if the application is in maintenance mode...
