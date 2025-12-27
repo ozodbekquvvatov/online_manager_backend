@@ -153,11 +153,13 @@ return [
 
         'client' => env('REDIS_CLIENT', 'phpredis'),
 
-        'options' => [
+        'options'  => extension_loaded('pdo_mysql') ? [
+            PDO::ATTR_TIMEOUT => 5,
+            PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
             'cluster' => env('REDIS_CLUSTER', 'redis'),
             'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')) . '-database-'),
             'persistent' => env('REDIS_PERSISTENT', false),
-        ],
+        ] : [],
 
         'default' => [
             'url' => env('REDIS_URL'),
